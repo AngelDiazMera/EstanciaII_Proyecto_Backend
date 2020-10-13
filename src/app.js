@@ -5,6 +5,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const connection = require('./database');
 
+const bodyParser = require("body-parser");
+
 // This is for session and authentication
 app.use(session({
     // key: 'Una-cadena-que-se-guste',
@@ -28,6 +30,8 @@ app.set('port', process.env.PORT || 4000);
 // MIDLEWARES: functions excecuted before it enters to the routes
 app.use(cors({origin:true,credentials: true})); // thus, you can send and retrieve data from server
 app.use(express.json()); // now server can understand JSON files
+// analizar solicitudes de tipo de contenido - application / x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
     console.log(req.session);
@@ -45,6 +49,9 @@ app.use((req, res, next) => {
 });
 
 // ROUTES FROM THIS API
+app.get("/", (req, res) => {
+    res.send("Bienvenido al backend de la aplicación de credenciales")
+});
 app.use('/api/users', require('./routes/Users'));
 app.use('/session', require('./routes/Session'));
 

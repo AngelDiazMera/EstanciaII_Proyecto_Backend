@@ -1,13 +1,19 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getUsers, createUser, deleteUser } = require('../controllers/usersController');
+const { createUser, findAll, findAllPublished, findOne, update, deleteAll, deleteUser } = require('../controllers/usersController');
 
 router.route('/') // everytime this file is executed
-    .get(getUsers)
-    .post(createUser);
+    .get(findAll)
+    .post(createUser)
+    .delete(deleteAll);
 
 router.route('/:id')
+    .get(findOne)
+    .put(update)
     .delete(deleteUser);
+
+router.route('/published')
+    .get(findAllPublished);
 
 module.exports = router;
